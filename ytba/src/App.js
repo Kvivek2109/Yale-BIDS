@@ -5,6 +5,7 @@ function App() {
     const [searchTerm, setSearchTerm] = useState('');
     const [responseData, setResponseData] = useState(null);
     const [taskIds, setTaskIds] = useState([]);
+    const [selectedTaskData, setSelectedTaskData] = useState(null);
 
     const handleSearch = () => {
         if (searchTerm.trim() !== '') {
@@ -24,14 +25,14 @@ function App() {
     const handleTaskIdClick = (taskId) => {
         fetch(`http://localhost:8000/fetch/${taskId}`)
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => setSelectedTaskData(data))
             .catch(error => console.error('Error fetching data:', error));
     };
 
   return (
       <div className="App">
         <div>
-            <h1> alzheimer disease</h1>
+            <h1>Search Query</h1>
           <input
               type="text"
               value={searchTerm}
@@ -56,6 +57,12 @@ function App() {
                             </span>
                       ))}
                   </p>
+              </div>
+          )}
+          {selectedTaskData && (
+              <div>
+                  <h2>Selected Task Data</h2>
+                  <pre>{JSON.stringify(selectedTaskData, null, 2)}</pre>
               </div>
           )}
       </div>

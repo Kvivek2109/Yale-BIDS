@@ -1,23 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 
 router.get('/:taskId', async function(req, res, next) {
     const taskId = req.params.taskId;
     try {
-        const fetchData = await fetchDataFunction(taskId);
-        res.json(fetchData);
+        const response = await axios.get(`http://localhost:8000/search/${taskId}`);
+        res.json(response.data);
     } catch (error) {
         console.error('Error fetching data:', error);
         res.status(500).json({error: 'Failed to fetch data'});
     }
 });
-
-async function fetchDataFunction(taskId) {
-    const mockData = {
-        taskId: taskId,
-        data: 'Some mock data corresponding to the task ID',
-    };
-    return mockData;
-}
 
 module.exports = router;
